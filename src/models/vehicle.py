@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 class Vehicle:
     def __init__(self, vehicle_id, model,battery_percentage):
         self.vehicle_id = vehicle_id
@@ -37,3 +38,8 @@ class Vehicle:
             self.__rental_price = price
         else:
             raise RuntimeError("Rental Price Must be More Than 0")
+
+
+    @abstractmethod
+    def calculate_trip_cost(self,distance):
+        pass
