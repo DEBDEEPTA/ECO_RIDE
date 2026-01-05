@@ -3,7 +3,7 @@ class Vehicle:
     def __init__(self, vehicle_id, model,battery_percentage):
         self.vehicle_id = vehicle_id
         self.model = model
-        self.battery_percentage = battery_percentage
+        self._battery_percentage = battery_percentage
 
         self.__maintenance_status = None
         self.__rental_price = None
@@ -19,12 +19,12 @@ class Vehicle:
 
     @property
     def battery_percentage(self):
-        return self.battery_percentage
+        return self._battery_percentage
 
     @battery_percentage.setter
-    def battery_percentage(self,percentage):
-        if (100 >= percentage >= 0):
-            self.battery_percentage = percentage
+    def battery_percentage(self,value):
+        if (100 >= value >= 0):
+            self._battery_percentage = value
         else:
             raise RuntimeError("Battery percentage cannot be more than 100 or less than 0")
 
