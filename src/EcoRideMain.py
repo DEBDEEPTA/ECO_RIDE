@@ -1,3 +1,5 @@
+from random import choices
+
 from src.fleet.hub import FleetHub
 from src.fleet.hub_manager import HubManager
 from src.helper.exceptions.battery_level import BatteryLevelError
@@ -11,10 +13,45 @@ class EcoRideMain:
     def greet_user():
         """
             Greets user With Welcome Message
-            parameters: None
-            returns: None
+            param
+                None
+            returns
+                None
         """
         print("Welcome to Eco-Ride Urban Mobility System")
+        print("=" * 40)
+
+    @staticmethod
+    def console_ui_comp_search_filter(hub_manager):
+        print("Select Search Filter")
+        print("=" * 40)
+        print("\t 1. Search Vehicles By Hub")
+        print("\t 2. Search Vehicle By Battery Percentage")
+        print("\t 0. Return")
+
+        choice = input()
+        vehicles = None
+        if(choice == "0"):
+            return
+        if(choice == "1"):
+            print("Search Vehicles By Hub")
+            print("=" * 40)
+            hub_name = input("\tEnter hub Name ->")
+            vehicles = hub_manager.search_vehicle_by_hub_name(hub_name)
+
+        elif (choice == "2"):
+            print("Search Vehicles By Battery Percentage")
+            print("=" * 40)
+            battery_level = int(input("\tEnter Minimum Battery Percentage ->"))
+            vehicles = hub_manager.search_by_min_battery_level(battery_level)
+
+        if vehicles:
+            for v in vehicles:
+                print(v)
+        else:
+            print("No Vehicles found")
+
+
 
     @staticmethod
     def fleet_hub_manager_console_ui():
@@ -24,14 +61,16 @@ class EcoRideMain:
             Returns: None
         """
         flag = True         # Outer Loop Flag (select Action)
-
         hub_manager = HubManager()
         while (flag):
+
             print("Select Action")
-            print("\t -> Add Vehicle (press 1)")
-            print("\t -> Add hub (press 2)")
-            print("\t -> View Hubs (press 3)")
-            print("\t -> Exit (press 0)")
+            print("=" * 40)
+            print("\t 1. Add Vehicle")
+            print("\t 2. Add hub")
+            print("\t 3. View Hubs")
+            print("\t 4. Search Vehicles")
+            print("\t 0. Exit")
 
             key = input()
             v_flag = True  # Inner Loop Flag (select Vehicle)
@@ -41,9 +80,10 @@ class EcoRideMain:
 
             if key == "1":
                 print("Choose Vehicle")
-                print("\t -> Add Electric Scooter (press 1)")
-                print("\t -> Add Electric Car (press 2)")
-                print("\t -> Return (press 0)")
+                print("=" * 40)
+                print("\t 1. Add Electric Scooter ")
+                print("\t 2. Add Electric Car ")
+                print("\t 3. Return ")
                 v_key = input()
 
                 while (v_flag):
@@ -59,7 +99,7 @@ class EcoRideMain:
                                 vehicle_id = input("Enter Vehicle Id -> ")
                                 model = input("Enter Vehicle Model -> ")
                                 battery_percentage = int(input("Enter Battery percentage -> "))
-                                max_speed_limit = int(input("Enter max speed Limit ->"))
+                                max_speed_limit = int(input("Enter max speed Limit -> "))
                                 scooter_obj = ElectricScooter(vehicle_id, model, battery_percentage, max_speed_limit)
                             except BatteryLevelError:
                                 print("Battery percentage Should be in range 0 to 100")
@@ -126,6 +166,10 @@ class EcoRideMain:
                     else:
                         for h_name, h_obj in hub_manager.hubs.items():
                             print(f"{h_name} -> {h_obj.vehicle_list}")
+
+            if(key == "4"):
+                EcoRideMain.console_ui_comp_search_filter(hub_manager)
+
 
 
 
