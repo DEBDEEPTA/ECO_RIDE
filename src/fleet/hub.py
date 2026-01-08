@@ -1,3 +1,6 @@
+from src.helper.exceptions.vehicle_exists import VehicleExistsError
+
+
 class FleetHub:
     def __init__(self,hub_name):
         # HUB NAME
@@ -7,5 +10,7 @@ class FleetHub:
 
 
     def add_vehicle(self,vehicle):
-        self.vehicle_list.append(vehicle)
+        if vehicle in self.vehicle_list:
+            raise VehicleExistsError(f"vehicle id:{vehicle.vehicle_id} is already present in hub:{self.hub_name}")
 
+        self.vehicle_list.append(vehicle)

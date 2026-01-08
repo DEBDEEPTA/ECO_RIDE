@@ -1,5 +1,7 @@
 from src.fleet.hub import FleetHub
 from src.fleet.hub_manager import HubManager
+from src.helper.exceptions.battery_level import BatteryLevelError
+from src.helper.exceptions.vehicle_exists import VehicleExistsError
 from src.models.electric_car import ElectricCar
 from src.models.electric_scooter import ElectricScooter
 
@@ -50,11 +52,19 @@ class EcoRideMain:
                         v_flag = False
 
                     if v_key == "1":
-                        vehicle_id = input("Enter Vehicle Id -> ")
-                        model = input("Enter Vehicle Model -> ")
-                        battery_percentage = int(input("Enter Battery percentage -> "))
-                        max_speed_limit = int(input("Enter max speed Limit ->"))
-                        scooter_obj = ElectricScooter(vehicle_id, model, battery_percentage, max_speed_limit)
+                        scooter_obj = None
+                        while(True):
+                            #Handeling BatteryLevel Error
+                            try:
+                                vehicle_id = input("Enter Vehicle Id -> ")
+                                model = input("Enter Vehicle Model -> ")
+                                battery_percentage = int(input("Enter Battery percentage -> "))
+                                max_speed_limit = int(input("Enter max speed Limit ->"))
+                                scooter_obj = ElectricScooter(vehicle_id, model, battery_percentage, max_speed_limit)
+                            except BatteryLevelError:
+                                print("Battery percentage Should be in range 0 to 100")
+                            else:
+                                break
 
                         hub_name = input("Enter Hub For the vehicle -> ")
 
@@ -64,17 +74,28 @@ class EcoRideMain:
                             hub = FleetHub(hub_name)
                             # Calling Method To add Hub Object to hub Manager
                             hub_manager.add_hub(hub)
-
-                        hub.add_vehicle(scooter_obj)
-                        break
+                        # Handling VehicleExistError (If vehicle with same id exist with in a hub)
+                        try:
+                            hub.add_vehicle(scooter_obj)
+                        except VehicleExistsError as e:
+                            print(e)
+                        else:
+                            break
 
                     if v_key == "2":
-                        vehicle_id = input("Enter Vehicle Id -> ")
-                        model = input("Enter Vehicle Model -> ")
-                        battery_percentage = int(input("Enter Battery percentage -> "))
-                        seating_capacity = int(input("Enter Seating Capacity"))
-
-                        ecar_obj = ElectricCar(vehicle_id, model, battery_percentage, seating_capacity)
+                        ecar_obj = None
+                        while (True):
+                            # Handeling BatteryLevel Error
+                            try:
+                                vehicle_id = input("Enter Vehicle Id -> ")
+                                model = input("Enter Vehicle Model -> ")
+                                battery_percentage = int(input("Enter Battery percentage -> "))
+                                seating_capacity = int(input("Enter Seating Capacity -> "))
+                                ecar_obj = ElectricCar(vehicle_id, model, battery_percentage, seating_capacity)
+                            except BatteryLevelError:
+                                print("Battery percentage Should be in range 0 to 100")
+                            else:
+                                break
 
                         hub_name = input("Enter Hub For the vehicle -> ")
 
@@ -85,8 +106,12 @@ class EcoRideMain:
                             # Calling Method To add Hub Object to hub Manager
                             hub_manager.add_hub(hub)
 
-                        hub.add_vehicle(ecar_obj)
-                        break
+                        try:
+                            hub.add_vehicle(ecar_obj)
+                        except VehicleExistsError as e:
+                            print(e)
+                        else:
+                            break
 
             if (key == "2"):
                     # Adding Hub Logic
@@ -104,32 +129,8 @@ class EcoRideMain:
 
 
 
-
-
-
-def main():
+if __name__ == "__main__":
     # UC1 Greeting user
     EcoRideMain.greet_user()
-
-
-    # UC5 Showing Dynamic behavior of the abstract method
-    # car = ElectricCar(1,"TESLA",83,4)
-    # scotter = ElectricScooter(2,"VESVA",54,75)
-    #
-    # # GETTING VALUE USING GETTER
-    # print(car.battery_percentage)
-    # # SETING VALUE USING SETTER (VALIDATION CHECK)
-    # # car.battery_percentage = -8 # THROWS RUNTIME ERROR 0>=value>=100
-    # print(car.battery_percentage)
-    #
-    # #Dynamic behavior of the abstract method
-    # print(car.calculate_trip_cost(35))
-    # print(scotter.calculate_trip_cost(35))
-
     # UC6 -> Use Console to add a new Hub or add vehicles to an existing Hub.
-
     EcoRideMain.fleet_hub_manager_console_ui()
-
-
-if __name__=="__main__":
-    main()
