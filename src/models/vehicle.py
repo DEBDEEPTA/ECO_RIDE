@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
 class Vehicle:
-    def __init__(self, vehicle_id, model,battery_percentage):
+    def __init__(self, vehicle_id, model,b_percentage):
         self.vehicle_id = vehicle_id
         self.model = model
-        self._battery_percentage = battery_percentage
+        self.battery_percentage = b_percentage
 
         self.__maintenance_status = None
         self.__rental_price = None
@@ -19,12 +19,12 @@ class Vehicle:
 
     @property
     def battery_percentage(self):
-        return self._battery_percentage
+        return self.__battery_percentage
 
     @battery_percentage.setter
     def battery_percentage(self,value):
         if (100 >= value >= 0):
-            self._battery_percentage = value
+            self.__battery_percentage = value
         else:
             raise RuntimeError("Battery percentage cannot be more than 100 or less than 0")
 
@@ -46,4 +46,10 @@ class Vehicle:
 
 
     def __str__(self):
-        return f"{self.vehicle_id}, {self.model}, {self._battery_percentage}"
+        return (f"{self.__class__.__name__} ->"
+                f"id: {self.vehicle_id},"
+                f"name: {self.model},"
+                f"battery: {self.__battery_percentage}")
+
+    def __repr__(self):
+        return self.__str__()
