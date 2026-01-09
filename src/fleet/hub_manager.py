@@ -1,3 +1,9 @@
+from collections import defaultdict
+
+from src.models.electric_car import ElectricCar
+from src.models.electric_scooter import ElectricScooter
+
+
 class HubManager:
     def __init__(self):
         self.hubs = {}
@@ -10,12 +16,15 @@ class HubManager:
 
     def search_vehicle_by_hub_name(self,hub_name):
         """
-        Search and return all vehicles available in a specific fleet hub.
-        param
-            hub_name: string input of the hub Name
-        returns
-            list[Vehicle]: list of vehicles present in the hub
-            list[]: empty list if hub is not found
+        Search and return all vehicles available in the specified fleet hub.
+
+        Args:
+            hub_name (str): Name of the fleet hub to search vehicles in.
+
+        Returns:
+            list[Vehicle]: A list of vehicles present in the given hub.
+                Returns an empty list if the hub name is not found or
+                if no vehicles are available in that hub.
         """
         hub = self.hubs.get(hub_name)  # returns value of the key
                                        # Default returns None
@@ -25,12 +34,16 @@ class HubManager:
 
     def search_by_min_battery_level(self,min_battery=80):
         """
-        Display Vehicles which only have minimus specified battery
-        param
-            min_battery: min battery level for the vehicle, default value is 80
-        returns
-            list[Vehicle]: list of vehicles having min_battery or more
-            list[]: empty list if no vehicles found with the specified battery percentage
+        Search and return vehicles whose battery level is greater than or equal
+        to the specified minimum battery percentage.
+
+        Args:
+            min_battery (int, optional): Minimum battery percentage required
+                for a vehicle to be included in the result. Defaults to 80.
+
+        Returns:
+            list[Vehicle]: A list of vehicles with battery level greater than
+            or equal to `min_battery`. Returns an empty list if no vehicles match.
         """
         result = []
         for hub in self.hubs.values():    # obtain value for each hub name
@@ -39,3 +52,23 @@ class HubManager:
                                       hub.vehicle_list)
             result.extend(filtered_result) # add filtered elements to the result list
         return  result
+
+    def vehicle_type_catagory(self):
+        """
+               Categorize and group vehicles by their type (Car / Scooter).
+               Returns:
+                   dict[str, list[Vehicle]]: Dictionary of vehicle type to list of vehicles.
+        """
+
+        category_dict = defaultdict(list)   # Default Dict is used to avoid KeyError
+
+        for hub in self.hubs.values():
+            for v in hub.vehicle_list:
+
+                if isinstance(v,ElectricCar):
+                    category_dict["Electric Car"].append(v)
+
+                elif isinstance(v,ElectricScooter):
+                    category_dict["Electric Scooter"].append(v)
+
+        return dict(category_dict)

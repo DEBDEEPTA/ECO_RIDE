@@ -12,17 +12,21 @@ class EcoRideMain:
     @staticmethod
     def greet_user():
         """
-            Greets user With Welcome Message
-            param
-                None
-            returns
-                None
+        Display a welcome message for the Eco-Ride Urban Mobility System.
         """
+
         print("Welcome to Eco-Ride Urban Mobility System")
         print("=" * 40)
 
     @staticmethod
     def console_ui_comp_search_filter(hub_manager):
+        """
+          Display console-based menu options for searching vehicles.
+          Args:
+              hub_manager: HubManager instance consists of all the hubs in which user want to search by the specific filter.
+          Returns:
+              None
+          """
         print("Select Search Filter")
         print("=" * 40)
         print("\t 1. Search Vehicles By Hub")
@@ -51,14 +55,28 @@ class EcoRideMain:
         else:
             print("No Vehicles found")
 
+    @staticmethod
+    def console_ui_comp_vehicle_categorization(hub_manager):
+        categorized = hub_manager.vehicle_type_catagory()
+
+        if not categorized:
+            print("No vehicles available")
+        else:
+            for v_type, vehicles in categorized.items():
+                print(f"\n{v_type} Vehicles")
+                print("=" * 40)
+                for v in vehicles:
+                    print(v)
 
 
     @staticmethod
     def fleet_hub_manager_console_ui():
         """"
             Console ui logic For Managing hub & Vehicle.
-            Parameters: None
-            Returns: None
+            Param:
+                None
+            Returns:
+                None
         """
         flag = True         # Outer Loop Flag (select Action)
         hub_manager = HubManager()
@@ -70,6 +88,7 @@ class EcoRideMain:
             print("\t 2. Add hub")
             print("\t 3. View Hubs")
             print("\t 4. Search Vehicles")
+            print("\t 5. Categorize Vehicles")
             print("\t 0. Exit")
 
             key = input()
@@ -83,7 +102,7 @@ class EcoRideMain:
                 print("=" * 40)
                 print("\t 1. Add Electric Scooter ")
                 print("\t 2. Add Electric Car ")
-                print("\t 3. Return ")
+                print("\t 0. Return ")
                 v_key = input()
 
                 while (v_flag):
@@ -170,6 +189,9 @@ class EcoRideMain:
             if(key == "4"):
                 EcoRideMain.console_ui_comp_search_filter(hub_manager)
 
+            if(key == "5"):
+
+                EcoRideMain.console_ui_comp_vehicle_categorization(hub_manager)
 
 
 
