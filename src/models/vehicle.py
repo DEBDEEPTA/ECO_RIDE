@@ -1,16 +1,20 @@
 from abc import ABC, abstractmethod
+
+from src.helper.enums.vehicle_status import VehicleStatus
 from src.helper.exceptions.battery_level import BatteryLevelError
 from src.helper.exceptions.rental_price import InvalidRentalPriceError
 
 
 class Vehicle:
-    def __init__(self, vehicle_id, model,b_percentage):
+    def __init__(self, vehicle_id, model,b_percentage,status:VehicleStatus):
         self.vehicle_id = vehicle_id
         self.model = model
         # assigning value to the setter of battery_percentage
         self.battery_percentage = b_percentage
 
-        self.__maintenance_status = None
+        # assassinating value to the setter (property) of the __maintenance Status
+        self.maintenance_status = status
+
         self.__rental_price = None
 
     @property

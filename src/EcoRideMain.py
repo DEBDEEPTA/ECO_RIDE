@@ -1,7 +1,9 @@
 from random import choices
+from tracemalloc import Statistic
 
 from src.fleet.hub import FleetHub
 from src.fleet.hub_manager import HubManager
+from src.helper.enums.vehicle_status import VehicleStatus
 from src.helper.exceptions.battery_level import BatteryLevelError
 from src.helper.exceptions.vehicle_exists import VehicleExistsError
 from src.models.electric_car import ElectricCar
@@ -68,6 +70,33 @@ class EcoRideMain:
                 for v in vehicles:
                     print(v)
 
+    @staticmethod
+    def console_ui_comp_vehicle_status_group(hub_manager):
+        status_count_analysis = hub_manager.vehicle_count_by_status()
+        print("\nFleet Analytics Summary")
+        print("=" * 40)
+
+        print(f"Available Vehicles        : {status_count_analysis.get(VehicleStatus.AVAILABLE, 0)}")
+        print(f"Vehicles On Trip          : {status_count_analysis.get(VehicleStatus.ON_TRIP, 0)}")
+        print(f"Under Maintenance Vehicles: {status_count_analysis.get(VehicleStatus.UNDER_MAINTENANCE, 0)}")
+
+    @staticmethod
+    def console_ui_comp_maintance_status_ip():
+        m_status = VehicleStatus.AVAILABLE
+        print("Select Vehicle Status")
+        print("-" * 40)
+        print("\t 1. Available")
+        print("\t 2. On Trip")
+        print("\t 3. under Maintenance")
+        status = input()
+        if (status == "1"):
+            m_status = VehicleStatus.AVAILABLE
+        elif (status == "2"):
+            m_status = VehicleStatus.ON_TRIP
+        elif (status == "3"):
+            m_status = VehicleStatus.UNDER_MAINTENANCE
+
+        return m_status
 
     @staticmethod
     def fleet_hub_manager_console_ui():
@@ -88,7 +117,8 @@ class EcoRideMain:
             print("\t 2. Add hub")
             print("\t 3. View Hubs")
             print("\t 4. Search Vehicles")
-            print("\t 5. Categorize Vehicles")
+            print("\t 5. Categorize Vehicles By Type")
+            print("\t 6. Categorize Vehicles By Status")
             print("\t 0. Exit")
 
             key = input()
@@ -119,7 +149,8 @@ class EcoRideMain:
                                 model = input("Enter Vehicle Model -> ")
                                 battery_percentage = int(input("Enter Battery percentage -> "))
                                 max_speed_limit = int(input("Enter max speed Limit -> "))
-                                scooter_obj = ElectricScooter(vehicle_id, model, battery_percentage, max_speed_limit)
+                                m_status = EcoRideMain.console_ui_comp_maintance_status_ip()
+                                scooter_obj = ElectricScooter(vehicle_id, model, battery_percentage, max_speed_limit,m_status)
                             except BatteryLevelError:
                                 print("Battery percentage Should be in range 0 to 100")
                             else:
@@ -150,7 +181,8 @@ class EcoRideMain:
                                 model = input("Enter Vehicle Model -> ")
                                 battery_percentage = int(input("Enter Battery percentage -> "))
                                 seating_capacity = int(input("Enter Seating Capacity -> "))
-                                ecar_obj = ElectricCar(vehicle_id, model, battery_percentage, seating_capacity)
+                                m_status = EcoRideMain.console_ui_comp_maintance_status_ip()
+                                ecar_obj = ElectricCar(vehicle_id, model, battery_percentage, seating_capacity,m_status)
                             except BatteryLevelError:
                                 print("Battery percentage Should be in range 0 to 100")
                             else:
@@ -192,6 +224,9 @@ class EcoRideMain:
             if(key == "5"):
 
                 EcoRideMain.console_ui_comp_vehicle_categorization(hub_manager)
+            if(key == "6"):
+                EcoRideMain.console_ui_comp_vehicle_status_group(hub_manager)
+
 
 
 

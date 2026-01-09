@@ -1,8 +1,6 @@
 from collections import defaultdict
-
 from src.models.electric_car import ElectricCar
 from src.models.electric_scooter import ElectricScooter
-
 
 class HubManager:
     def __init__(self):
@@ -72,3 +70,15 @@ class HubManager:
                     category_dict["Electric Scooter"].append(v)
 
         return dict(category_dict)
+
+    def vehicle_count_by_status(self):
+        """
+               Count vehicles by their current status using Enum types.
+        """
+        status_count = defaultdict(int)
+
+        for hub in self.hubs.values():
+            for v in hub.vehicle_list:
+                status_count[v.maintenance_status] += 1  # Calling getter (property) of the __maintenance_status
+
+        return dict(status_count)
