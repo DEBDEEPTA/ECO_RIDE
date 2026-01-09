@@ -17,12 +17,11 @@ class HubManager:
         Search and return all vehicles available in the specified fleet hub.
 
         Args:
-            hub_name (str): Name of the fleet hub to search vehicles in.
+            hub_name: Name of the fleet hub to search vehicles in.
 
         Returns:
             list[Vehicle]: A list of vehicles present in the given hub.
-                Returns an empty list if the hub name is not found or
-                if no vehicles are available in that hub.
+                           Returns an empty list if the hub name is not found
         """
         hub = self.hubs.get(hub_name)  # returns value of the key
                                        # Default returns None
@@ -36,26 +35,25 @@ class HubManager:
         to the specified minimum battery percentage.
 
         Args:
-            min_battery (int, optional): Minimum battery percentage required
-                for a vehicle to be included in the result. Defaults to 80.
+            min_battery: Minimum battery percentage required Defaults to 80.
 
         Returns:
-            list[Vehicle]: A list of vehicles with battery level greater than
-            or equal to `min_battery`. Returns an empty list if no vehicles match.
+            list[Vehicle]: A list of vehicles with min battery level
+                           Returns an empty list if no vehicles match.
         """
         result = []
         for hub in self.hubs.values():    # obtain value for each hub name
 
-            filtered_result = filter( lambda b: b.battery_percentage > min_battery,
+            filtered_result = filter( lambda b: b.battery_percentage >= min_battery,
                                       hub.vehicle_list)
             result.extend(filtered_result) # add filtered elements to the result list
         return  result
 
     def vehicle_type_catagory(self):
         """
-               Categorize and group vehicles by their type (Car / Scooter).
-               Returns:
-                   dict[str, list[Vehicle]]: Dictionary of vehicle type to list of vehicles.
+            Categorize and group vehicles by their type (Car / Scooter).
+            Returns:
+                dict[]: Dictionary of vehicle type to list of vehicles.
         """
 
         category_dict = defaultdict(list)   # Default Dict is used to avoid KeyError

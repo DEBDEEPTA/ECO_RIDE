@@ -1,6 +1,3 @@
-from random import choices
-from tracemalloc import Statistic
-
 from src.fleet.hub import FleetHub
 from src.fleet.hub_manager import HubManager
 from src.helper.enums.vehicle_status import VehicleStatus
@@ -102,10 +99,29 @@ class EcoRideMain:
     def console_ui_comp_vehicle_sort(hub_manager):
         hub_name = input("Enter Hub Name -> ")
         hub = hub_manager.get_hub(hub_name)
-
         if hub:
-            sorted_list = hub.get_sorted_vehicles_by_model()
-            print(f"\nVehicles in Hub '{hub_name}' (Sorted by Model):")
+            sorted_list = []
+            print("Sorting Options")
+            print("=" * 40)
+            print("\t 1. Sort by Model Name (Descending)")
+            print("\t 2. Sort by Battery (Descending)")
+            print("\t 3. Sort by Fare (Descending)")
+            print("\t 0. Return")
+            choice = input()
+            choice_name = None
+            if(choice == "0"):
+                return
+            elif(choice == "1"):
+                sorted_list = hub.get_sorted_vehicles_by_model()
+                choice_name = "Model"
+            elif(choice == "2"):
+                sorted_list = hub.get_vehicles_by_battery()
+                choice_name = "Battery"
+            elif (choice == "3"):
+                sorted_list = hub.get_vehicles_sorted_by_fare()
+                choice_name = "Fare"
+
+            print(f"\nVehicles in Hub '{hub_name}' (Sorted by {choice_name}):")
             print("-" * 40)
             for v in sorted_list:
                 print(v)
@@ -165,7 +181,8 @@ class EcoRideMain:
                                 battery_percentage = int(input("Enter Battery percentage -> "))
                                 max_speed_limit = int(input("Enter max speed Limit -> "))
                                 m_status = EcoRideMain.console_ui_comp_maintance_status_ip()
-                                scooter_obj = ElectricScooter(vehicle_id, model, battery_percentage, max_speed_limit,m_status)
+                                distance = int(input("Enter distance travelled -> "))
+                                scooter_obj = ElectricScooter(vehicle_id, model, battery_percentage, max_speed_limit,m_status,distance)
                             except BatteryLevelError:
                                 print("Battery percentage Should be in range 0 to 100")
                             else:
@@ -197,7 +214,8 @@ class EcoRideMain:
                                 battery_percentage = int(input("Enter Battery percentage -> "))
                                 seating_capacity = int(input("Enter Seating Capacity -> "))
                                 m_status = EcoRideMain.console_ui_comp_maintance_status_ip()
-                                ecar_obj = ElectricCar(vehicle_id, model, battery_percentage, seating_capacity,m_status)
+                                distance = int(input("Enter distance travelled -> "))
+                                ecar_obj = ElectricCar(vehicle_id, model, battery_percentage, seating_capacity,m_status,distance)
                             except BatteryLevelError:
                                 print("Battery percentage Should be in range 0 to 100")
                             else:
@@ -235,9 +253,7 @@ class EcoRideMain:
 
             if(key == "4"):
                 EcoRideMain.console_ui_comp_search_filter(hub_manager)
-
             if(key == "5"):
-
                 EcoRideMain.console_ui_comp_vehicle_categorization(hub_manager)
             if(key == "6"):
                 EcoRideMain.console_ui_comp_vehicle_status_group(hub_manager)

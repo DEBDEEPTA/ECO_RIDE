@@ -50,9 +50,8 @@ class Vehicle:
 
 
     @abstractmethod
-    def calculate_trip_cost(self,distance):
+    def calculate_trip_cost(self):
         pass
-
 
     def __str__(self):
         return (f"\n{self.__class__.__name__}:("

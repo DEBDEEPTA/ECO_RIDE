@@ -19,5 +19,19 @@ class FleetHub:
         """
         Return a new list of vehicles sorted alphabetically by model name.
         """
-
         return sorted(self.vehicle_list, key=lambda v: v.model.lower())
+
+
+    def get_vehicles_by_battery(self, descending=True):
+        """
+        Return vehicles sorted by battery percentage.
+        """
+        return sorted(self.vehicle_list,key=lambda v: v.battery_percentage,reverse=descending)
+
+    def get_vehicles_sorted_by_fare(self,descending=True):
+        """
+             Sort vehicles by already-stored trip fare.
+            """
+
+        return sorted(self.vehicle_list,key=lambda v: v.calculate_trip_cost(),reverse=descending)
+
