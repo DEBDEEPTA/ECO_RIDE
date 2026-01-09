@@ -99,6 +99,20 @@ class EcoRideMain:
         return m_status
 
     @staticmethod
+    def console_ui_comp_vehicle_sort(hub_manager):
+        hub_name = input("Enter Hub Name -> ")
+        hub = hub_manager.get_hub(hub_name)
+
+        if hub:
+            sorted_list = hub.get_sorted_vehicles_by_model()
+            print(f"\nVehicles in Hub '{hub_name}' (Sorted by Model):")
+            print("-" * 40)
+            for v in sorted_list:
+                print(v)
+        else:
+            print("Hub not found")
+
+    @staticmethod
     def fleet_hub_manager_console_ui():
         """"
             Console ui logic For Managing hub & Vehicle.
@@ -119,6 +133,7 @@ class EcoRideMain:
             print("\t 4. Search Vehicles")
             print("\t 5. Categorize Vehicles By Type")
             print("\t 6. Categorize Vehicles By Status")
+            print("\t 7. Order Vehicles")
             print("\t 0. Exit")
 
             key = input()
@@ -226,6 +241,9 @@ class EcoRideMain:
                 EcoRideMain.console_ui_comp_vehicle_categorization(hub_manager)
             if(key == "6"):
                 EcoRideMain.console_ui_comp_vehicle_status_group(hub_manager)
+            if(key == "7"):
+                EcoRideMain.console_ui_comp_vehicle_sort(hub_manager)
+
 
 
 
