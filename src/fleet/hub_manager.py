@@ -80,3 +80,8 @@ class HubManager:
                 status_count[v.maintenance_status] += 1  # Calling getter (property) of the __maintenance_status
 
         return dict(status_count)
+
+    def to_dict(self):
+        #Dictionary Comprehension
+        data =  { hub_name:hub.to_dict() for hub_name, hub in self.hubs.items()}
+        return data

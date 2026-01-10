@@ -1,3 +1,2 @@
 hub_name,vehicle_type,vehicle_id,model,battery,status,distance,seating_cap_or_max_speed
-Bangalore,ElectricScooter,KA0B24,Tata,83,AVAILABLE,10874.0,220
-Cheanni,ElectricScooter,KL08X867,Vespa,78,AVAILABLE,2054.0,75
+Bangalore,ElectricScooter,TN063345,Vespa,83,UNDER_MAINTENANCE,14568.0,75

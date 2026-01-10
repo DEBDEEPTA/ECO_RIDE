@@ -13,3 +13,9 @@ class ElectricScooter(Vehicle):
     def calculate_trip_cost(self):
         cost = ElectricScooter.BASE_PRICE + (self.distance_min * (ElectricScooter.COST_PER_MIN))
         return cost
+
+    def to_dict(self):
+        data = super().to_dict()
+        data["max_speed_limit"] = self.max_speed_limit
+        data["distance"] = self.distance_min
+        return  data

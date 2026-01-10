@@ -12,3 +12,10 @@ class ElectricCar(Vehicle):
     def calculate_trip_cost(self):
         cost = ElectricCar.BASE_PRICE + ( self.distance_km* (ElectricCar.COST_PER_MIN))
         return  cost
+
+    # Convert to Dictionary Object to dump as a json file
+    def to_dict(self):
+          data = super().to_dict()
+          data["seating_capacity"] = self.seating_capacity
+          data["distance"] = self.distance_km
+          return data

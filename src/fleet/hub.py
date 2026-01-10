@@ -35,3 +35,11 @@ class FleetHub:
 
         return sorted(self.vehicle_list,key=lambda v: v.calculate_trip_cost(),reverse=descending)
 
+
+    def to_dict(self):
+        data = {
+            "hub_name":self.hub_name,
+            # List Comprihension For Calling to_dict method for each vehicle in vehicle List
+            "vehicle_list":[v.to_dict() for v in self.vehicle_list]
+        }
+        return data

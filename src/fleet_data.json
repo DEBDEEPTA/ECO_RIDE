@@ -1,0 +1,20 @@
+{
+    "Bangalore": {
+        "hub_name": "Bangalore",
+        "vehicle_list": [
+            {
+                "vehicle_type": "ElectricScooter",
+                "vehicle_id": "TN063345",
+                "model": "Vespa",
+                "battery_percentage": 83,
+                "maintenance_status": "UNDER_MAINTENANCE",
+                "max_speed_limit": 75,
+                "distance": 14568.0
+            }
+        ]
+    },
+    "CHN": {
+        "hub_name": "CHN",
+        "vehicle_list": []
+    }
+}

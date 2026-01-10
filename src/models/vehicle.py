@@ -67,3 +67,15 @@ class Vehicle:
             return False
         else:
             return self.vehicle_id == other.vehicle_id
+
+    # Convert to Dictionary Object to dump as a json file
+    def to_dict(self):
+        v_dict = {
+
+            "vehicle_type": self.__class__.__name__,
+            "vehicle_id": self.vehicle_id,
+            "model": self.model,
+            "battery_percentage": self.battery_percentage,
+            "maintenance_status": self.maintenance_status.name,
+        }
+        return  v_dict

@@ -1,3 +1,6 @@
+import sys
+from random import choice
+
 from src.helper.io_utils.csv_writer import save_data
 from src.fleet.hub import FleetHub
 from src.fleet.hub_manager import HubManager
@@ -5,6 +8,7 @@ from src.helper.enums.vehicle_status import VehicleStatus
 from src.helper.exceptions.battery_level import BatteryLevelError
 from src.helper.exceptions.vehicle_exists import VehicleExistsError
 from src.helper.io_utils.csv_writer import load_data
+from src.helper.io_utils.json_writer import load_json_file, write_json_file
 from src.models.electric_car import ElectricCar
 from src.models.electric_scooter import ElectricScooter
 
@@ -261,22 +265,53 @@ class EcoRideMain:
             if(key == "7"):
                 EcoRideMain.console_ui_comp_vehicle_sort(hub_manager)
 
+
+    @staticmethod
+    def choose_loader(hub_manager):
+        print("Choose Loader")
+        print("="*40)
+        print("\t 1. Load CSV File")
+        print("\t 2. Load JSON File")
+        print("\t 0. Exit")
+        choice = input()
+        if(choice == "0"):
+            sys.exit()
+        if(choice == "1"):
+
+            try:
+                load_data(hub_manager, "vehicle_data.csv")
+                print("Fleet data loaded successfully")
+            except FileNotFoundError:
+                print("No existing fleet data found")
+
+        elif(choice == "2"):
+            try:
+                load_json_file(hub_manager, "fleet_data.json")
+                print("Fleet loaded from JSON")
+            except FileNotFoundError:
+                print("No JSON data found")
+
+    @staticmethod
+    def save_data_to_all(hub_manager):
+        # saving csv data
+        save_data(hub_manager, "vehicle_data.csv")
+        print("Fleet data saved successfully")
+        # Save JSON
+        write_json_file(hub_manager, "fleet_data.json")
+        print("Fleet saved to JSON")
+
+
 if __name__ == "__main__":
 
     #UC1 Greeting user
     EcoRideMain.greet_user()
     # Creating Hub Manager
     hub_mnager = HubManager()
-    # loading csv data
-    try:
-        load_data(hub_mnager, "vehicle_data.csv")
-        print("Fleet data loaded successfully")
-    except FileNotFoundError:
-        print("No existing fleet data found")
-
+    # loading data
+    EcoRideMain.choose_loader(hub_mnager)
     # UC6 -> Use Console to add a new Hub or add vehicles to an existing Hub.
     EcoRideMain.fleet_hub_manager_console_ui(hub_mnager)
+    # save data
+    EcoRideMain.save_data_to_all(hub_mnager)
 
-    # saving csv data
-    save_data(hub_mnager, "vehicle_data.csv")
-    print("Fleet data saved successfully")
+
