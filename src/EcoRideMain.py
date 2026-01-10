@@ -1,8 +1,10 @@
+from src.helper.io_utils.csv_writer import save_data
 from src.fleet.hub import FleetHub
 from src.fleet.hub_manager import HubManager
 from src.helper.enums.vehicle_status import VehicleStatus
 from src.helper.exceptions.battery_level import BatteryLevelError
 from src.helper.exceptions.vehicle_exists import VehicleExistsError
+from src.helper.io_utils.csv_writer import load_data
 from src.models.electric_car import ElectricCar
 from src.models.electric_scooter import ElectricScooter
 
@@ -129,7 +131,7 @@ class EcoRideMain:
             print("Hub not found")
 
     @staticmethod
-    def fleet_hub_manager_console_ui():
+    def fleet_hub_manager_console_ui(hub_manager):
         """"
             Console ui logic For Managing hub & Vehicle.
             Param:
@@ -138,7 +140,6 @@ class EcoRideMain:
                 None
         """
         flag = True         # Outer Loop Flag (select Action)
-        hub_manager = HubManager()
         while (flag):
 
             print("Select Action")
@@ -260,12 +261,22 @@ class EcoRideMain:
             if(key == "7"):
                 EcoRideMain.console_ui_comp_vehicle_sort(hub_manager)
 
-
-
-
-
 if __name__ == "__main__":
-    # UC1 Greeting user
+
+    #UC1 Greeting user
     EcoRideMain.greet_user()
+    # Creating Hub Manager
+    hub_mnager = HubManager()
+    # loading csv data
+    try:
+        load_data(hub_mnager, "vehicle_data.csv")
+        print("Fleet data loaded successfully")
+    except FileNotFoundError:
+        print("No existing fleet data found")
+
     # UC6 -> Use Console to add a new Hub or add vehicles to an existing Hub.
-    EcoRideMain.fleet_hub_manager_console_ui()
+    EcoRideMain.fleet_hub_manager_console_ui(hub_mnager)
+
+    # saving csv data
+    save_data(hub_mnager, "vehicle_data.csv")
+    print("Fleet data saved successfully")
