@@ -245,8 +245,11 @@ class EcoRideMain:
             if (key == "2"):
                     # Adding Hub Logic
                     hub_nm = input("Enter Hub Name -> ")
-                    new_hub = FleetHub(hub_nm)
-                    hub_manager.add_hub(new_hub)
+                    if(hub_manager.hub_exists(hub_nm)):
+                        print("Hub Already Exists")
+                    else:
+                        new_hub = FleetHub(hub_nm)
+                        hub_manager.add_hub(new_hub)
 
             if (key == "3"):
                     # View Hub Logic For input Val "3"

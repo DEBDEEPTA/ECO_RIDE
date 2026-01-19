@@ -12,6 +12,12 @@ class HubManager:
     def get_hub(self,hub_name):
         return self.hubs.get(hub_name)
 
+    def hub_exists(self,hub_name):
+        hub = self.hubs.get(hub_name)
+        if hub in self.hubs:
+            return True
+        return False
+
     def search_vehicle_by_hub_name(self,hub_name):
         """
         Search and return all vehicles available in the specified fleet hub.
